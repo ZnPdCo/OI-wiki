@@ -40,16 +40,14 @@ jobs:
       - name: Install Node.js dependencies
         if: steps.cache-node.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile --production
-      - name: Debug 1
-        run: |
-          cat ./docs/math/algebra/field-theory.md
       - name: Page Build
         run: |
           ./scripts/pre-build/pre-build.sh
+          cat ./docs/math/algebra/field-theory.md
           uv run mkdocs build -v
-      - name: Debug (already boom)
-        run: |
-          cat ./site/math/algebra/field-theory/index.html
+      # - name: Debug (already boom)
+      #   run: |
+      #     cat ./site/math/algebra/field-theory/index.html
       - name: Post-process HTML
         # https://github.com/TypeStrong/ts-node/issues/1997
         run: node --loader ts-node/esm scripts/post-build/html-postprocess.ts commits-info math external-links
